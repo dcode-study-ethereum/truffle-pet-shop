@@ -37,7 +37,7 @@ App = {
   },
 
   initContract: function() {
-    $.getJson('Adoption.json',function(data){
+    $.getJSON('Adoption.json',function(data){
       // initialize contract using truffle-contract
       var adoptionArtifact = data;
       App.contracts.Adoption = TruffleContract(adoptionArtifact);
@@ -56,13 +56,13 @@ App = {
 
   markAdopted: function(adopters, account) {
     var adoptionInstance;
-    App.contracts.adoption.deployed().then(function(instance){
+    App.contracts.Adoption.deployed().then(function(instance){
       adoptionInstance = instance;
       return adoptionInstance.getAdopters.call();
     }).then(function(adopters){
-      for(i=0; i<adopters.length ; i++){
-        if(adopters[0] !== address(0)){
-          $('.panel-pet').eq(1).find('button').text('Success').attr('disabled',true);
+      for(let i=0; i<adopters.length ; i++){
+        if(adopters[i] !== '0x0000000000000000000000000000000000000000'){
+          $('.panel-pet').eq(i).find('button').text('Success').attr('disabled',true);
         }
       }
       return 1;
@@ -78,7 +78,7 @@ App = {
 
     var adoptionInstance;
 
-    web3.getAccounts(function (error, accounts) {
+    web3.eth.getAccounts(function (error, accounts) {
       if (error) {
           console.log(error);
       }
